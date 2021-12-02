@@ -8,7 +8,7 @@
       </div>
 
       <div class="nav-links">
-        <ul>
+        <ul v-show="!mobile">
           <router-link class="link" to="#">Home</router-link>
           <router-link class="link" to="#">Blogs</router-link>
           <router-link class="link" to="#">Create Post</router-link>
@@ -16,10 +16,13 @@
         </ul>
       </div>
     </nav>
-    <Icon icon="octicon:three-bars-16" class="menu-icon" />
-    <!-- <menuIcon /> -->
+
+    <div class="menu-icon" @click="toggleMobileNav" v-show="mobile">
+      <Icon icon="octicon:three-bars-16" />
+    </div>
+
     <transition name="mobile-nav">
-      <ul class="mobile-nav">
+      <ul class="mobile-nav" v-show="mobileNav">
         <router-link class="link" to="#">Home</router-link>
         <router-link class="link" to="#">Blogs</router-link>
         <router-link class="link" to="#">Create Post</router-link>
@@ -44,7 +47,35 @@ export default {
       mobile: null, // the app is in mobile viewport or not
       mobileNav: null, // the mobile navigation bar is open or not
       windowWidth: null,
+      navLinks: [
+        { to: { name: 'Home' }, text: 'Home' },
+        { to: { name: 'Blogs' }, text: 'Blogs' },
+        { to: { name: 'NewPost' }, text: 'CreatePost' },
+        { to: { name: 'LogIn' }, text: 'Login/Register' },
+      ],
     };
+  },
+
+  created() {
+    window.addEventListener('resize', this.checkScreen);
+    this.checkScreen();
+  },
+
+  methods: {
+    checkScreen() {
+      console.log('check');
+      this.windowWidth = window.innerWidth;
+      if (this.windowWidth <= 800) {
+        this.mobile = true;
+        return;
+      }
+      this.mobile = false;
+      this.mobileNav = false;
+    },
+
+    toggleMobileNav() {
+      this.mobileNav = !this.mobileNav;
+    },
   },
 };
 </script>
@@ -64,24 +95,18 @@ header {
   transition: 0.3s color ease;
 
   &:hover {
-    color: #1eb8b8;
+    color: #1eb8b8 !important;
   }
 }
 
 nav {
   display: flex;
   padding: 25px 0;
+  // gap: 1rem;
 
   .branding {
     display: flex;
     align-items: center;
-
-    .header {
-      font-weight: 600;
-      font-size: 24px;
-      color: #000;
-      text-decoration: none;
-    }
   }
 
   .nav-links {
@@ -93,6 +118,10 @@ nav {
 
     ul {
       margin-right: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
 
       .link:not(:last-child) {
         margin-right: 32px;
@@ -104,13 +133,13 @@ nav {
 .menu-icon {
   cursor: pointer;
   position: absolute;
-  top: 30px;
-  right: 25px;
-  font-size: 25px;
+  top: 1.875rem;
+  right: 1.5625rem;
+  font-size: 1.5625rem;
 }
 
 .mobile-nav {
-  padding: 20px;
+  padding: 1.25rem;
   background: #303030;
   display: flex;
   flex-direction: column;
@@ -122,8 +151,19 @@ nav {
   left: 0;
 
   .link {
-    padding: 15px 0;
+    padding: 1rem 0;
     color: #fff;
   }
+}
+
+// TRANSITIONS
+.mobile-nav-enter-active,
+.mobile-nav-leave-active {
+  transition: all 0.5s ease;
+}
+
+.mobile-nav-enter,
+.mobile-nav-leave-to {
+  transform: translateX(-250px);
 }
 </style>

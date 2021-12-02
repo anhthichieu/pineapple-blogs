@@ -1,4 +1,4 @@
-# pineapple-blog
+# pineapple-blogs
 
 ## Project setup
 ```
