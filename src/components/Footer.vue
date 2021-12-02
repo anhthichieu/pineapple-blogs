@@ -93,7 +93,7 @@ export default {
 footer {
   margin-top: auto;
   padding: 6.25rem 1.5625rem;
-  background: #303030;
+  background: $bg-dark;
   color: #fff;
   .container {
     display: flex;

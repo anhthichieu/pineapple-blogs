@@ -63,7 +63,6 @@ export default {
 
   methods: {
     checkScreen() {
-      console.log('check');
       this.windowWidth = window.innerWidth;
       if (this.windowWidth <= 800) {
         this.mobile = true;
@@ -84,8 +83,7 @@ export default {
 header {
   background: #fff;
   padding: 0 25px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: $box-shadow;
   z-index: 99;
 }
 
@@ -140,7 +138,7 @@ nav {
 
 .mobile-nav {
   padding: 1.25rem;
-  background: #303030;
+  background: $bg-dark;
   display: flex;
   flex-direction: column;
   height: 100%;
