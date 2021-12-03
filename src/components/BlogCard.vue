@@ -1,6 +1,6 @@
 <template>
   <div class="blog-card">
-    <div class="icons">
+    <div class="icons" v-show="editPost">
       <div class="icon">
         <Icon icon="feather:edit" :inline="true" class="edit" />
       </div>
@@ -30,6 +30,24 @@ export default {
   components: {
     Icon,
   },
+
+  computed: {
+    editPost() {
+      return this.$store.state.editPost;
+    },
+
+    // editPost: {
+    //   get() {
+    //     return this.getEditPost();
+    //   },
+
+    //   set(newValue) {
+    //     this.setEditPost(newValue);
+    //   },
+    // },
+  },
+
+  // inject: ['getEditPost', 'setEditPost'],
 };
 </script>
 
@@ -55,6 +73,7 @@ export default {
     top: 0.625rem;
     right: 0.625rem;
     z-index: 99;
+    transition: opacity 0.3s ease;
 
     .icon {
       padding: 0.5rem;
@@ -67,7 +86,7 @@ export default {
       transition: 0.3s ease all;
 
       &:hover {
-        background: $bg-dark;
+        background: $main-dark;
 
         .edit,
         .delete {

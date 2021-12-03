@@ -38,7 +38,7 @@
             </router-link>
             <router-link
               class="link white-text"
-              :to="{ name: 'LogIn' }"
+              :to="{ name: 'Login' }"
               v-if="!user"
             >
               Login/Register
@@ -93,7 +93,7 @@ export default {
 footer {
   margin-top: auto;
   padding: 6.25rem 1.5625rem;
-  background: $bg-dark;
+  background: $main-dark;
   color: #fff;
   .container {
     display: flex;

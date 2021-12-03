@@ -112,7 +112,7 @@ export default {
         transition: 0.3s ease-in all;
 
         &:hover {
-          border-bottom-color: $bg-dark;
+          border-bottom-color: $main-dark;
         }
       }
 
@@ -157,7 +157,7 @@ export default {
 
 .no-user:first-child {
   .blog-content {
-    background: $bg-dark;
+    background: $main-dark;
     color: #fff;
   }
 }

@@ -9,10 +9,12 @@
 
       <div class="nav-links">
         <ul v-show="!mobile">
-          <router-link class="link" to="#">Home</router-link>
-          <router-link class="link" to="#">Blogs</router-link>
+          <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
+          <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
           <router-link class="link" to="#">Create Post</router-link>
-          <router-link class="link" to="#">Login/Register</router-link>
+          <router-link class="link" :to="{ name: 'Login' }">
+            Login/Register
+          </router-link>
         </ul>
       </div>
     </nav>
@@ -23,10 +25,12 @@
 
     <transition name="mobile-nav">
       <ul class="mobile-nav" v-show="mobileNav">
-        <router-link class="link" to="#">Home</router-link>
-        <router-link class="link" to="#">Blogs</router-link>
+        <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
+        <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
         <router-link class="link" to="#">Create Post</router-link>
-        <router-link class="link" to="#">Login/Register</router-link>
+        <router-link class="link" :to="{ name: 'Login' }">
+          Login/Register
+        </router-link>
       </ul>
     </transition>
   </header>
@@ -51,7 +55,7 @@ export default {
         { to: { name: 'Home' }, text: 'Home' },
         { to: { name: 'Blogs' }, text: 'Blogs' },
         { to: { name: 'NewPost' }, text: 'CreatePost' },
-        { to: { name: 'LogIn' }, text: 'Login/Register' },
+        { to: { name: 'Login' }, text: 'Login/Register' },
       ],
     };
   },
@@ -74,6 +78,12 @@ export default {
 
     toggleMobileNav() {
       this.mobileNav = !this.mobileNav;
+    },
+  },
+
+  watch: {
+    $route() {
+      this.mobileNav = false;
     },
   },
 };
@@ -138,7 +148,7 @@ nav {
 
 .mobile-nav {
   padding: 1.25rem;
-  background: $bg-dark;
+  background: $main-dark;
   display: flex;
   flex-direction: column;
   height: 100%;
