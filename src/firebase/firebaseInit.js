@@ -1,13 +1,13 @@
-import firebase from 'firebase/app'
-import 'firebase/firestore'
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAQowgcZ-rDXLMEqDJuC_gOrPKaQNKFKow",
-  authDomain: "pineappleblogs-426c6.firebaseapp.com",
-  projectId: "pineappleblogs-426c6",
-  storageBucket: "pineappleblogs-426c6.appspot.com",
-  messagingSenderId: "1044962467459",
-  appId: "1:1044962467459:web:370e92db1bf67e040545b6"
+  apiKey: 'AIzaSyAQowgcZ-rDXLMEqDJuC_gOrPKaQNKFKow',
+  authDomain: 'pineappleblogs-426c6.firebaseapp.com',
+  projectId: 'pineappleblogs-426c6',
+  storageBucket: 'pineappleblogs-426c6.appspot.com',
+  messagingSenderId: '1044962467459',
+  appId: '1:1044962467459:web:370e92db1bf67e040545b6'
 };
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);

@@ -143,3 +143,21 @@ button,
     }
   }
 }
+
+.error {
+  text-align: center;
+  font-size: 0.75rem;
+  color: red;
+}
+
+// TRANSITIONS
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+// END OF TRANSITIONS

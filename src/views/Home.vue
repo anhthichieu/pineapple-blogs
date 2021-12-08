@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <!-- Welcome section -->
-    <BlogPost :post="welcomeScreen" />
+    <BlogPost :post="welcomeScreen" v-if="!user" />
 
     <!-- Most related posts -->
     <BlogPost
@@ -25,10 +25,10 @@
     </div>
 
     <!-- Updates -->
-    <div class="updates">
+    <div class="updates" v-if="!user">
       <div class="container">
         <h2>Never mist a post. Register for your free account today!</h2>
-        <router-link class="router-button" to="#">
+        <router-link class="router-button" :to="{ name: 'Register' }">
           Register for PineappleBlogs
           <Icon
             icon="akar-icons:arrow-right"
@@ -48,10 +48,21 @@ import { Icon } from '@iconify/vue2';
 
 export default {
   name: 'Home',
+
   components: {
     BlogPost,
     BlogCard,
     Icon,
+  },
+
+  computed: {
+    sampleBlogCards() {
+      return this.$store.state.sampleBlogCards;
+    },
+
+    user() {
+      return this.$store.state.user;
+    },
   },
 
   data: () => ({
@@ -76,12 +87,6 @@ export default {
       },
     ],
   }),
-
-  computed: {
-    sampleBlogCards() {
-      return this.$store.state.sampleBlogCards;
-    },
-  },
 };
 </script>
 

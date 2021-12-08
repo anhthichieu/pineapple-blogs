@@ -1,6 +1,6 @@
 <template>
   <div class="form-wrap">
-    <form class="login">
+    <form class="login" @keyup.enter="signIn">
       <p class="login-register">
         Don't have an account?
         <router-link class="router-link" :to="{ name: 'Register' }">
@@ -22,10 +22,14 @@
           <input type="password" placeholder="Password" v-model="password" />
         </div>
       </div>
+
       <router-link class="forgot-password" :to="{ name: 'ForgotPassword' }">
         Forgot your password?
       </router-link>
-      <button>Sign In</button>
+
+      <div class="error" v-show="error">{{ errorMessage }}</div>
+
+      <button @click.prevent="signIn">Sign In</button>
       <div class="angle"></div>
     </form>
     <div class="background"></div>
@@ -34,6 +38,8 @@
 
 <script>
 import { Icon } from '@iconify/vue2';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 export default {
   name: 'Login',
@@ -41,9 +47,43 @@ export default {
     Icon,
   },
   data: () => ({
-    email: null,
-    password: null,
+    email: '',
+    password: '',
+    error: null,
+    errorMessage: '',
   }),
+
+  methods: {
+    async signIn() {
+      try {
+        await firebase
+          .auth()
+          .signInWithEmailAndPassword(this.email, this.password);
+        this.$router.push({ name: 'Home' });
+        this.error = false;
+        this.errorMessage = '';
+      } catch (e) {
+        this.error = true;
+        this.errorMessage = e.message;
+      }
+    },
+
+    // signIn() {
+    //   firebase
+    //     .auth()
+    //     .signInWithEmailAndPassword(this.email, this.password)
+    //     .then(() => {
+    //       this.$router.push({ name: 'Home' });
+    //       this.error = false;
+    //       this.errorMessage = '';
+    //       console.log(firebase.auth().currentUser.uid);
+    //     })
+    //     .catch((e) => {
+    //       this.error = true;
+    //       this.errorMessage = e.message;
+    //     });
+    // },
+  },
 };
 </script>
 

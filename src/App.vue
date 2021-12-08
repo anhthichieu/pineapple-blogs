@@ -1,5 +1,5 @@
 <template>
-  <div class="app-wrapper">
+  <div class="app-wrapper" id="thixinh">
     <div class="app">
       <Navigation v-if="navigation"></Navigation>
       <router-view />
@@ -11,6 +11,8 @@
 <script>
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 export default {
   name: 'app',
@@ -18,13 +20,11 @@ export default {
     Navigation,
     Footer,
   },
+
   data: () => ({
     navigation: true,
   }),
-  created() {
-    this.checkRoute();
-  },
-  mounted() {},
+
   methods: {
     checkRoute() {
       if (
@@ -38,11 +38,25 @@ export default {
       this.navigation = true;
     },
   },
+
   watch: {
     $route() {
       this.checkRoute();
     },
   },
+
+  created() {
+    firebase.auth().onAuthStateChanged((user) => {
+      this.$store.commit('updateUser', user);
+      if (user) {
+        this.$store.dispatch('getCurrentUser');
+      }
+    });
+
+    this.checkRoute();
+  },
+
+  mounted() {},
 };
 </script>
 

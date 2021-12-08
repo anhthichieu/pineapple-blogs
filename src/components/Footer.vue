@@ -26,16 +26,15 @@
             <router-link class="link white-text" :to="{ name: 'Home' }">
               Home
             </router-link>
+
             <router-link class="link white-text" :to="{ name: 'Blogs' }">
               Blogs
             </router-link>
-            <router-link
-              class="link white-text"
-              :to="{ name: 'NewPost' }"
-              v-if="user"
-            >
+
+            <router-link class="link white-text" to="#" v-if="user">
               Create Post
             </router-link>
+
             <router-link
               class="link white-text"
               :to="{ name: 'Login' }"
@@ -63,9 +62,14 @@ export default {
     Icon,
   },
 
+  computed: {
+    user() {
+      return this.$store.state.user;
+    },
+  },
+
   data() {
     return {
-      user: null,
       socialIcons: [
         {
           href: '#',

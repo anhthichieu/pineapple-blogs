@@ -1,11 +1,11 @@
 <template>
-  <div class="blog-wrapper no-user">
+  <div :class="['blog-wrapper', { 'no-user': !user }]">
     <div class="blog-content">
       <div>
         <h2>{{ post.title }}</h2>
         <div v-if="post.welcomeScreen">
           <p>{{ post.blogPost }}</p>
-          <router-link to="#" class="link link-light">
+          <router-link :to="{ name: 'Login' }" class="link link-light">
             Login/Register
             <Icon
               icon="akar-icons:arrow-right"
@@ -36,9 +36,17 @@ import { Icon } from '@iconify/vue2';
 
 export default {
   name: 'blogPost',
+
   props: ['post'],
+
   components: {
     Icon,
+  },
+
+  computed: {
+    user() {
+      return this.$store.state.user;
+    },
   },
 };
 </script>

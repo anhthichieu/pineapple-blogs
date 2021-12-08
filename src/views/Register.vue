@@ -46,7 +46,9 @@
         </div>
       </div>
 
-      <button>Sign Up</button>
+      <div class="error" v-show="error">{{ errorMessage }}</div>
+
+      <button @click.prevent="register">Sign Up</button>
       <div class="angle"></div>
     </form>
     <div class="background"></div>
@@ -55,19 +57,61 @@
 
 <script>
 import { Icon } from '@iconify/vue2';
+import firebase from 'firebase/compat/app';
+import db from '@/firebase/firebaseInit';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
 
 export default {
   name: 'Register',
+
   components: {
     Icon,
   },
+
   data: () => ({
-    firstName: null,
-    lastName: null,
-    username: null,
-    email: null,
-    password: null,
+    firstName: '',
+    lastName: '',
+    username: '',
+    email: '',
+    password: '',
+    error: null,
+    errorMessage: '',
   }),
+
+  computed: {},
+
+  methods: {
+    async register() {
+      if (
+        this.email !== '' &&
+        this.password !== '' &&
+        this.firstName !== '' &&
+        this.lastName !== '' &&
+        this.username !== ''
+      ) {
+        this.error = false;
+        this.errorMessage = '';
+        const firebaseAuth = await firebase.auth();
+        const createUser = await firebaseAuth.createUserWithEmailAndPassword(
+          this.email,
+          this.password
+        );
+        const result = await createUser;
+        const database = db.collection('users').doc(result.user.uid);
+        await database.set({
+          firstName: this.firstName,
+          lastName: this.lastName,
+          username: this.username,
+          email: this.email,
+        });
+        this.$router.push({ name: 'Home' });
+        return;
+      }
+      this.error = true;
+      this.errorMessage = 'Please fill out all the fields!';
+    },
+  },
 };
 </script>
 
