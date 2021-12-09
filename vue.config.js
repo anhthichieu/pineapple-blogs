@@ -15,7 +15,10 @@ module.exports = {
     // ref: https://cli.vuejs.org/guide/css.html#passing-options-to-pre-processor-loaders
     loaderOptions: {
       sass: {
-        additionalData: `@import "@/assets/styles/_variables.scss";`
+        additionalData: `
+        @import "@/assets/styles/_variables.scss";
+        @import "@/assets/styles/_mixins.scss";
+        `
       }
     }
   }

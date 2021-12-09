@@ -31,7 +31,7 @@
               Blogs
             </router-link>
 
-            <router-link class="link white-text" to="#" v-if="user">
+            <router-link class="link white-text" to="#" v-if="user && admin">
               Create Post
             </router-link>
 
@@ -63,6 +63,10 @@ export default {
   },
 
   computed: {
+    admin() {
+      return this.$store.state.profileAdmin;
+    },
+
     user() {
       return this.$store.state.user;
     },

@@ -139,13 +139,14 @@ export default {
         justify-content: center;
         align-items: center;
         margin-bottom: 0.5rem;
+
+        @include input-field;
         input {
           width: 100%;
           border: none;
           background: #f2f7f6;
           padding: 0.25rem 0.25rem 0.25rem 1.875rem;
           height: 3.125rem;
-
           &:focus {
             outline: none;
           }
