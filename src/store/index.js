@@ -30,6 +30,11 @@ export default new Vuex.Store({
         blogDate: 'Dec 2, 2021',
       },
     ],
+    blogHTML: '',
+    blogTitle: '',
+    blogPhotoName: '',
+    blogPhotoFileURL: null,
+    blogPhotoReview: null,
     editPost: null,
     user: null,
     profileAdmin: null,
@@ -42,6 +47,26 @@ export default new Vuex.Store({
   },
 
   mutations: {
+    newBlogPost(state, payload) {
+      state.blogHTML = payload;
+    },
+
+    updateBlogTitle(state, payload) {
+      state.blogTitle = payload;
+    },
+
+    fileNameChanged(state, payload) {
+      state.blogPhotoName = payload;
+    },
+
+    createFileURL(state, payload) {
+      state.blogPhotoFileURL = payload;
+    },
+
+    openPhotoPreview(state) {
+      state.blogPhotoReview = !state.blogPhotoReview;
+    },
+
     toggleEditPost(state, payload) {
       state.editPost = payload;
     },

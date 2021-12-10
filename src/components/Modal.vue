@@ -20,15 +20,17 @@ export default {
 
 <style lang="scss" scoped>
 .modal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 101;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  // z-index: 101;
+  // position: absolute;
+  // top: 0;
+  // width: 100%;
+  // height: 100%;
+  // background: rgba(0, 0, 0, 0.7);
+
+  @include modal;
   .modal-content {
     display: flex;
     flex-direction: column;

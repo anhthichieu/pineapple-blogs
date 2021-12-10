@@ -112,8 +112,8 @@ button,
 }
 
 .button-inactive {
-  pointer-events: none !important;
-  cursor: none !important;
+  // pointer-events: none !important;
+  cursor: not-allowed !important;
   background: rgba(128, 128, 128, 0.5) !important;
 }
 

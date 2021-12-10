@@ -13,6 +13,10 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
+import Quill from 'quill';
+window.Quill = Quill;
+const ImageResize = require('quill-image-resize-module').default;
+Quill.register('module/imageResize', ImageResize);
 
 export default {
   name: 'app',

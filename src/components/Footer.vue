@@ -31,7 +31,11 @@
               Blogs
             </router-link>
 
-            <router-link class="link white-text" to="#" v-if="user && admin">
+            <router-link
+              class="link white-text"
+              :to="{ name: 'CreatePost' }"
+              v-if="user"
+            >
               Create Post
             </router-link>
 
