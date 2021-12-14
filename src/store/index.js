@@ -5,37 +5,19 @@ import 'firebase/compat/auth';
 import db from '@/firebase/firebaseInit';
 
 Vue.use(Vuex)
+Vue.config.devtools = true;
 
 export default new Vuex.Store({
   state: {
-    sampleBlogCards: [
-      {
-        blogTitle: 'Blog Card #1',
-        blogCoverPhoto: 'stock-1',
-        blogDate: 'Dec 2, 2021',
-      },
-      {
-        blogTitle: 'Blog Card #2',
-        blogCoverPhoto: 'stock-2',
-        blogDate: 'Dec 2, 2021',
-      },
-      {
-        blogTitle: 'Blog Card #3',
-        blogCoverPhoto: 'stock-3',
-        blogDate: 'Dec 2, 2021',
-      },
-      {
-        blogTitle: 'Blog Card #4',
-        blogCoverPhoto: 'stock-4',
-        blogDate: 'Dec 2, 2021',
-      },
-    ],
+    blogPosts: [],
+    postLoaded: null,
     blogHTML: '',
     blogTitle: '',
     blogPhotoName: '',
+    blogPhotoFile: null,
     blogPhotoFileURL: null,
     blogPhotoReview: null,
-    editPost: null,
+    isEditingPost: null,
     user: null,
     profileAdmin: null,
     profileEmail: null,
@@ -59,6 +41,10 @@ export default new Vuex.Store({
       state.blogPhotoName = payload;
     },
 
+    fileChanged(state, payload) {
+      state.blogPhotoFile = payload;
+    },
+
     createFileURL(state, payload) {
       state.blogPhotoFileURL = payload;
     },
@@ -68,7 +54,18 @@ export default new Vuex.Store({
     },
 
     toggleEditPost(state, payload) {
-      state.editPost = payload;
+      state.isEditingPost = payload;
+    },
+
+    setBlogState(state, payload) {
+      state.blogTitle = payload.blogTitle;
+      state.blogHTML = payload.blogHTML;
+      state.blogPhotoFileURL = payload.blogCoverPhoto;
+      state.blogPhotoName = payload.blogCoverPhotoName;
+    },
+
+    filterBlogPost(state, payload) {
+      state.blogPosts = state.blogPosts.filter(post => post.blogID !== payload);
     },
 
     updateUser(state, payload) {
@@ -125,9 +122,52 @@ export default new Vuex.Store({
       })
 
       commit('setProfileInitials')
+    },
+
+    async getPost({ state }) {
+      // const database = await db.collection('blogPosts').orderBy('date', 'desc');
+      // const database = await db.collection('blogPosts').orderBy('date'); // ascending by default
+      const database = await db.collection('blogPosts');
+      const dbResults = await database.get();
+      dbResults.forEach((doc) => {
+        if (!state.blogPosts.some(post => post.blogID === doc.id)) {
+          const data = {
+            blogID: doc.data().blogID,
+            blogHTML: doc.data().blogHTML,
+            blogCoverPhoto: doc.data().blogCoverPhoto,
+            blogCoverPhotoName: doc.data().blogCoverPhotoName,
+            blogTitle: doc.data().blogTitle,
+            blogDate: doc.data().date
+          }
+          state.blogPosts.push(data);
+        }
+      });
+      // Sort blog by newest to oldest
+      state.blogPosts.sort((a, b) => b.blogDate - a.blogDate);
+      state.postLoaded = true;
+    },
+
+    async deletePost({ commit }, payload) {
+      const getDeletedPost = await db.collection('blogPosts').doc(payload);
+      await getDeletedPost.delete();
+      commit('filterBlogPost', payload);
+    },
+
+    async updatePost({ commit, dispatch }, payload) {
+      commit('filterBlogPost', payload); // remove the previous post with old content in state
+      await dispatch('getPost'); // then fetch the blog post with new content from database
     }
   },
 
-  modules: {
-  }
+  getters: {
+    blogPostsFeed(state) {
+      return state.blogPosts.slice(0, 2);
+    },
+
+    blogPostsCards(state) {
+      return state.blogPosts.slice(2, 6);
+    }
+  },
+
+  modules: {}
 })

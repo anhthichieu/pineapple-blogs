@@ -2,7 +2,7 @@
   <div :class="['blog-wrapper', { 'no-user': !user }]">
     <div class="blog-content">
       <div>
-        <h2>{{ post.title }}</h2>
+        <h2>{{ post.blogTitle }}</h2>
         <div v-if="post.welcomeScreen">
           <p>{{ post.blogPost }}</p>
           <router-link :to="{ name: 'Login' }" class="link link-light">
@@ -16,8 +16,11 @@
         </div>
 
         <div v-else>
-          <p class="content-preview">{{ post.blogHTML }}</p>
-          <router-link to="#" class="link">
+          <p class="content-preview" v-html="post.blogHTML"></p>
+          <router-link
+            :to="{ name: 'ViewBlog', params: { blogid: post.blogID } }"
+            class="link"
+          >
             View The Post
             <Icon icon="akar-icons:arrow-right" :inline="true" class="arrow" />
           </router-link>
@@ -26,7 +29,7 @@
     </div>
 
     <div class="blog-photo">
-      <img :src="`/blogPhotos/${post.photo}.jpg`" alt="" />
+      <img :src="post.blogCoverPhoto" alt="" />
     </div>
   </div>
 </template>

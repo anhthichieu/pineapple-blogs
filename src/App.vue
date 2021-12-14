@@ -1,6 +1,6 @@
 <template>
-  <div class="app-wrapper" id="thixinh">
-    <div class="app">
+  <div class="app-wrapper" id="app">
+    <div class="app" v-if="$store.state.postLoaded">
       <Navigation v-if="navigation"></Navigation>
       <router-view />
       <Footer v-if="navigation"></Footer>
@@ -13,10 +13,6 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-import Quill from 'quill';
-window.Quill = Quill;
-const ImageResize = require('quill-image-resize-module').default;
-Quill.register('module/imageResize', ImageResize);
 
 export default {
   name: 'app',
@@ -50,6 +46,9 @@ export default {
   },
 
   created() {
+    this.$store.dispatch('getPost');
+    // console.log('USER:', firebase.auth().currentUser);
+
     firebase.auth().onAuthStateChanged((user) => {
       this.$store.commit('updateUser', user);
       if (user) {
@@ -58,6 +57,7 @@ export default {
     });
 
     this.checkRoute();
+    this.$store.dispatch('getPost');
   },
 
   mounted() {},

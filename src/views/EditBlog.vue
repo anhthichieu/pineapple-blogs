@@ -51,9 +51,9 @@
       </div>
 
       <div class="blog-actions">
-        <button @click="uploadBlog">Publish Blog</button>
+        <button @click="updateBlog">Save changes</button>
         <router-link class="router-button" :to="{ name: 'BlogPreview' }">
-          Post Preview
+          Preview Changes
         </router-link>
       </div>
     </div>
@@ -72,10 +72,6 @@ import Quill from 'quill';
 window.Quill = Quill;
 const ImageResize = require('quill-image-resize-module').default;
 Quill.register('module/imageResize', ImageResize);
-
-// import { Quill } from 'vue2-editor';
-// import ImageResize from 'quill-image-resize-module';
-// Quill.register('modules/imageResize', ImageResize);
 
 export default {
   name: 'CreatePost',
@@ -124,10 +120,13 @@ export default {
       },
     },
     loading: null,
+    routeID: null,
+    currentBlog: null,
     prevRoute: null,
   }),
 
   beforeRouteEnter(_to, from, next) {
+    // ref: https://router.vuejs.org/guide/advanced/navigation-guards.html#in-component-guards
     next((vm) => {
       vm.prevRoute = from.name;
     });
@@ -169,9 +168,12 @@ export default {
       );
     },
 
-    uploadBlog() {
+    async updateBlog() {
+      const database = await db.collection('blogPosts').doc(this.routeID);
+      console.log(database);
       if (this.blogTitle.length !== 0 && this.blogHTML.length !== 0) {
         if (this.file) {
+          // the user changes new cover photo
           this.loading = true;
           const storageRef = firebase.storage().ref();
           const docRef = storageRef.child(
@@ -187,19 +189,14 @@ export default {
             },
             async () => {
               const downloadURL = await docRef.getDownloadURL();
-              const timeStamp = await Date.now();
-              const database = await db.collection('blogPosts').doc();
 
-              await database.set({
-                blogID: database.id,
+              await database.update({
                 blogHTML: this.blogHTML,
                 blogCoverPhoto: downloadURL,
                 blogCoverPhotoName: this.blogCoverPhotoName,
                 blogTitle: this.blogTitle,
-                profileId: this.profileId,
-                date: timeStamp,
               });
-
+              await this.$store.dispatch('updatePost', this.routeID);
               await this.$store.dispatch('getPost');
               this.loading = false;
               this.$router.push({
@@ -210,11 +207,27 @@ export default {
           );
           return;
         }
-        this.error = true;
-        this.errorMsg = 'Please ensure you uploaded a cover photo!';
-        setTimeout(() => {
-          this.error = false;
-        }, 5000);
+
+        // no longer need this error checking because the cover photo is already updated onto firebase storage
+        // this.error = true;
+        // this.errorMsg = 'Please ensure you uploaded a cover photo!';
+        // setTimeout(() => {
+        //   this.error = false;
+        // }, 5000);
+        // return;
+
+        this.loading = true;
+        await database.update({
+          blogHTML: this.blogHTML,
+          blogTitle: this.blogTitle,
+        });
+
+        await this.$store.dispatch('updatePost', this.routeID);
+        this.loading = false;
+        this.$router.push({
+          name: 'ViewBlog',
+          params: { blogid: database.id },
+        });
         return;
       }
       this.error = true;
@@ -226,17 +239,14 @@ export default {
     },
   },
 
-  mounted() {
-    const emptyBlogData = {
-      blogTitle: '',
-      blogHTML: '',
-      blogPhotoFileURL: '',
-      blogPhotoName: '',
-    };
+  async mounted() {
+    this.routeID = this.$route.params.blogid;
+    this.currentBlog = await this.$store.state.blogPosts.find((post) => {
+      return post.blogID === this.$route.params.blogid;
+    });
+    this.$store.commit('setBlogState', this.currentBlog);
 
-    if (this.prevRoute !== 'BlogPreview') {
-      this.$store.commit('setBlogState', emptyBlogData);
-    } else {
+    if (this.prevRoute === 'BlogPreview') {
       this.file = this.$store.state.blogPhotoFile;
     }
   },

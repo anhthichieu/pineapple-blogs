@@ -1,18 +1,29 @@
 <template>
   <div class="blog-card">
-    <div class="icons" v-show="editPost">
-      <div class="icon">
+    <div class="icons" v-show="isEditingPost">
+      <div @click="editPost" class="icon">
         <Icon icon="feather:edit" :inline="true" class="edit" />
       </div>
-      <div class="icon">
+      <div @click="deletePost" class="icon">
         <Icon icon="ant-design:delete-outlined" :inline="true" class="delete" />
       </div>
     </div>
-    <img :src="`/blogCards/${post.blogCoverPhoto}.jpg`" alt="" />
+    <img :src="post.blogCoverPhoto" alt="" />
+
     <div class="info">
       <h4>{{ post.blogTitle }}</h4>
-      <h6>Posted on: {{ post.blogDate }}</h6>
-      <router-link class="link" to="#">
+      <h6>
+        Posted on:
+        {{
+          new Date(post.blogDate).toLocaleString('en-us', {
+            dateStyle: 'long',
+          })
+        }}
+      </h6>
+      <router-link
+        class="link"
+        :to="{ name: 'ViewBlog', params: { blogid: post.blogID } }"
+      >
         View The Post
         <Icon icon="akar-icons:arrow-right" :inline="true" class="arrow" />
       </router-link>
@@ -32,8 +43,8 @@ export default {
   },
 
   computed: {
-    editPost() {
-      return this.$store.state.editPost;
+    isEditingPost() {
+      return this.$store.state.isEditingPost;
     },
 
     // editPost: {
@@ -48,6 +59,19 @@ export default {
   },
 
   // inject: ['getEditPost', 'setEditPost'],
+
+  methods: {
+    deletePost() {
+      this.$store.dispatch('deletePost', this.post.blogID);
+    },
+
+    editPost() {
+      this.$router.push({
+        name: 'EditBlog',
+        params: { blogid: this.post.blogID },
+      });
+    },
+  },
 };
 </script>
 
@@ -76,6 +100,7 @@ export default {
     transition: opacity 0.3s ease;
 
     .icon {
+      z-index: 99;
       padding: 0.5rem;
       display: flex;
       justify-content: center;

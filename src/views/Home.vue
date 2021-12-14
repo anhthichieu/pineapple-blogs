@@ -5,7 +5,7 @@
 
     <!-- Most related posts -->
     <BlogPost
-      v-for="(post, index) in sampleBlogPost"
+      v-for="(post, index) in blogPostsFeed"
       :key="index"
       :post="post"
     />
@@ -16,7 +16,7 @@
         <h3>View More Recent Blogs</h3>
         <div class="blog-cards">
           <BlogCard
-            v-for="(post, index) in sampleBlogCards"
+            v-for="(post, index) in blogPostsCards"
             :key="index"
             :post="post"
           />
@@ -56,8 +56,12 @@ export default {
   },
 
   computed: {
-    sampleBlogCards() {
-      return this.$store.state.sampleBlogCards;
+    blogPostsFeed() {
+      return this.$store.getters.blogPostsFeed;
+    },
+
+    blogPostsCards() {
+      return this.$store.getters.blogPostsCards;
     },
 
     user() {
@@ -74,18 +78,18 @@ export default {
       photo: 'coding',
     },
 
-    sampleBlogPost: [
-      {
-        title: 'This is a Filter Title!',
-        blogHTML: 'This is a filter blog post title!',
-        photo: 'beautiful-stories',
-      },
-      {
-        title: 'This is a Filter Title 2!',
-        blogHTML: 'This is a filter blog post title 2!',
-        photo: 'designed-for-everyone',
-      },
-    ],
+    // sampleBlogPost: [
+    //   {
+    //     title: 'This is a Filter Title!',
+    //     blogHTML: 'This is a filter blog post title!',
+    //     photo: 'beautiful-stories',
+    //   },
+    //   {
+    //     title: 'This is a Filter Title 2!',
+    //     blogHTML: 'This is a filter blog post title 2!',
+    //     photo: 'designed-for-everyone',
+    //   },
+    // ],
   }),
 };
 </script>
