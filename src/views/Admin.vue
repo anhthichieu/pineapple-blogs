@@ -13,15 +13,15 @@
           />
         </div>
         <span> {{ functionMsg }} </span>
-        <button @click="addAdmin" class="button">Submit</button>
+        <!-- <button @click="addAdmin" class="button">Submit</button> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/functions';
+// import firebase from 'firebase/compat/app';
+// import 'firebase/compat/functions';
 
 export default {
   name: 'Admin',
@@ -32,11 +32,11 @@ export default {
   }),
 
   methods: {
-    async addAdmin() {
-      const addAdmin = await firebase.functions().httpsCallable('addAdminRole');
-      const result = await addAdmin({ email: this.adminEmail });
-      this.functionMsg = result.data.message;
-    },
+    // async addAdmin() {
+    //   const addAdmin = await firebase.functions().httpsCallable('addAdminRole');
+    //   const result = await addAdmin({ email: this.adminEmail });
+    //   this.functionMsg = result.data.message;
+    // },
   },
 };
 </script>

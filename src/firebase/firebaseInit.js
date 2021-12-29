@@ -2,12 +2,12 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyAQowgcZ-rDXLMEqDJuC_gOrPKaQNKFKow',
-  authDomain: 'pineappleblogs-426c6.firebaseapp.com',
-  projectId: 'pineappleblogs-426c6',
-  storageBucket: 'pineappleblogs-426c6.appspot.com',
-  messagingSenderId: '1044962467459',
-  appId: '1:1044962467459:web:370e92db1bf67e040545b6'
+  apiKey: 'AIzaSyBJMkhA9wAvIY1G5Vs7S22QiUFShKSP1u4',
+  authDomain: 'blogs-c5f18.firebaseapp.com',
+  projectId: 'blogs-c5f18',
+  storageBucket: 'blogs-c5f18.appspot.com',
+  messagingSenderId: '299731440382',
+  appId: '1:299731440382:web:0c3bc76e0f86a2e5fb4baf'
 };
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
